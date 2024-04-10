@@ -3,10 +3,20 @@ package co.edu.upb.ips.views;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class Login extends JFrame {
 
-    private JPanel panel1;
+    private JPanel panel;
+    private JPanel topPanel;
+    private JPanel infPanel;
+    private JPanel rightPanel;
+    private JLabel usuarioLabel;
+    private JLabel sedeLabel;
+    private JComboBox<String> sedeComboBox;
+    private JLabel identificacionLabel;
+    private JLabel contrasenaLabel;
     private JTextField textField1;
     private JPasswordField passwordField1;
     private JButton ingresarButton;
@@ -16,18 +26,17 @@ public class Login extends JFrame {
         this.setBounds(EXIT_ON_CLOSE, ABORT, 1400, 800);
         this.setLocationRelativeTo(null);
 
-
         // Crear JPanel con color de fondo blanco
         JPanel panel = new JPanel(null);
         getContentPane().add(panel); // Añadir panel al JFrame
         panel.setVisible(true);
-        panel.setBounds(0, 0, 1400, 400);
+        panel.setBounds(0, 0, 1400, 800);
         panel.setBackground(Color.WHITE);
 
         // Crear JPanel superior con color de fondo azul oscuro
         JPanel topPanel = new JPanel(null);
         topPanel.setBackground(new Color(0, 47, 87)); // Azul oscuro
-        topPanel.setBounds(0, 0, 1400, 86);
+        topPanel.setBounds(0, 0, 1400, 70);
         topPanel.setVisible(true);
         panel.add(topPanel);
 
@@ -36,13 +45,13 @@ public class Login extends JFrame {
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         infPanel.setBorder(border);
         infPanel.setBackground(new Color(207, 212, 217, 210)); // gris claro
-        infPanel.setBounds(0, 610, 1400, 86);
+        infPanel.setBounds(0, 625, 1400, 75);
         infPanel.setVisible(true);
         panel.add(infPanel);
 
         //Añadir información al panel inferior
         JLabel infoLabel = new JLabel("© 2024 IPS SALUD PRO - Todos los derechos reservados");
-        infoLabel.setBounds(500, 25, 400, 40);
+        infoLabel.setBounds(500, 20, 400, 40);
         infoLabel.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
         infoLabel.setForeground(Color.BLACK);
         infoLabel.setVisible(true);
@@ -81,7 +90,7 @@ public class Login extends JFrame {
         rightPanel.add(sedeLabel); // Agrega usuarioLabel a rightPanel
 
         // Crear JComboBox para seleccionar la sede
-        String[] sedes = {"Principal - Bucaramanga", "Sede - Floridablanca", "Sede - Piedecuesta", "Sede - Girón", "Sede - Ríonegro", "Sede - Pamplona", "Sede - Lebrija"};
+        String[] sedes = {"","Principal - Bucaramanga", "Sede - Floridablanca", "Sede - Piedecuesta", "Sede - Girón", "Sede - Ríonegro", "Sede - Pamplona", "Sede - Lebrija"};
         JComboBox<String> sedeComboBox = new JComboBox<>(sedes);
         sedeComboBox.setBounds(65, 100, 300, 40);
         sedeComboBox.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
@@ -128,20 +137,71 @@ public class Login extends JFrame {
         Border border1 = BorderFactory.createLineBorder(Color.BLACK);
         ingresarButton.setBorder(border1);
 
-        // Crear JLabel con el título
+        // Añadir imagen al Panel de la izquierda
         String path = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloAdministrador/src/main/java/co/edu/upb/ips/images/SALUD_PRO-preview.png";
         ImageIcon logo = new ImageIcon(path);
         JLabel logoLabel = new JLabel(logo);
         logoLabel.setBounds(130, 100, 500, 500);
         panel.add(logoLabel, BorderLayout.CENTER);
 
-        // Crear JLabel con el título
+        // Añadir imagen al Panel de la pantalla completa
         String path2 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloMedico/src/main/java/co/edu/upb/ips/images/mbbstres-doctores-l6mpzm2z8xq90u8e.jpg";
         ImageIcon logo2 = new ImageIcon(path2);
-        JLabel logoLabel2 = new JLabel(logo2);
-        logoLabel2.setBounds(0, 0, 1366, 768);
-        panel.add(logoLabel2, BorderLayout.CENTER);
-        
+        JLabel fondoLabel2 = new JLabel(logo2);
+        fondoLabel2.setBounds(0, 0, 1366, 768);
+        panel.add(fondoLabel2, BorderLayout.CENTER);
+
+        // Crear Acción para el botón de Ingresar
+        ingresarButton.addActionListener(new ActionListener() {
+             @Override
+             public void actionPerformed(ActionEvent e) {
+                 // Validar que los campos no estén vacíos
+                 if (textField1.getText().isEmpty() || passwordField1.getText().isEmpty()) {
+                     JOptionPane.showMessageDialog(panel, "Por favor diligencie todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
+                 } else {
+                     // Validar que el número de identificación sea numérico
+                     try {
+                         Long.parseLong(textField1.getText());
+                     } catch (NumberFormatException ex) {
+                         JOptionPane.showMessageDialog(panel, "El número de identificación debe ser numérico", "Error", JOptionPane.ERROR_MESSAGE);
+                         return;
+                     }
+                     // Validar que la contraseña tenga al menos 8 caracteres
+                     if (passwordField1.getText().length() < 8) {
+                         JOptionPane.showMessageDialog(panel, "La contraseña debe tener al menos 8 caracteres", "Error", JOptionPane.ERROR_MESSAGE);
+                         return;
+                     }
+                     // Válidar que la sede esté seleccionada y sea diferente a la primera opción
+                     if (sedeComboBox.getSelectedIndex() == 0) {
+                         JOptionPane.showMessageDialog(panel, "Por favor seleccione una sede", "Error", JOptionPane.ERROR_MESSAGE);
+                         return;
+                     }
+                     // Válidar que el número de identificación esté registrado en la base de datos
+                     // Válidar que la contraseña esté registrada en la base de datos
+                        if (textField1.getText().equals("1097492322") && passwordField1.getText().equals("123456789")) {
+                            JOptionPane.showMessageDialog(panel, "            Bienvenid@", "Ingreso Exitoso", JOptionPane.INFORMATION_MESSAGE);
+                            // Redirigir a la pantalla de Gestionar Actividades
+                            new GestionarActividades().setVisible(true);
+                            dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(panel, "Número de identificación o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+
+                 }
+             }
+        });
+
+        // Crear Advertencia si se oprime el botón de Cerrar
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Object[] options = {"Sí", "No"};
+                if (JOptionPane.showOptionDialog(panel, "¿Desea cerrar la aplicación?", "Cerrar Aplicación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {

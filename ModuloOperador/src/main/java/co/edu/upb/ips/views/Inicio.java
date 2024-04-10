@@ -18,7 +18,7 @@ public class Inicio extends JFrame {
         JPanel panel = new JPanel(null);
         getContentPane().add(panel); // Añadir panel al JFrame
         panel.setVisible(true);
-        panel.setBounds(0, 0, 1400, 400);
+        panel.setBounds(0, 0, 1400, 800);
         panel.setBackground(Color.WHITE);
 
         // Crear JPanel superior con color de fondo azul oscuro
@@ -32,7 +32,7 @@ public class Inicio extends JFrame {
         String path = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloAdministrador/src/main/java/co/edu/upb/ips/images/SALUD_PRO-preview.png";
         ImageIcon logo = new ImageIcon(path);
         JLabel logoLabel = new JLabel(logo);
-        logoLabel.setBounds(440, 90, 500, 500);
+        logoLabel.setBounds(430, 90, 500, 500);
         panel.add(logoLabel, BorderLayout.CENTER);
 
         // Crear botón de inicio
@@ -63,5 +63,4 @@ public class Inicio extends JFrame {
             }
         });
     }
-
 }

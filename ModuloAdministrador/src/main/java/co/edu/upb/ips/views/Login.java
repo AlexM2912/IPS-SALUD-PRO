@@ -19,18 +19,17 @@ public class Login extends JFrame {
         this.setBounds(EXIT_ON_CLOSE, ABORT, 1400, 800);
         this.setLocationRelativeTo(null);
 
-
         // Crear JPanel con color de fondo blanco
         JPanel panel = new JPanel(null);
         getContentPane().add(panel); // Añadir panel al JFrame
         panel.setVisible(true);
-        panel.setBounds(0, 0, 1400, 400);
+        panel.setBounds(0, 0, 1400, 800);
         panel.setBackground(Color.WHITE);
 
         // Crear JPanel superior con color de fondo azul oscuro
         JPanel topPanel = new JPanel(null);
         topPanel.setBackground(new Color(0, 47, 87)); // Azul oscuro
-        topPanel.setBounds(0, 0, 1400, 86);
+        topPanel.setBounds(0, 0, 1400, 70);
         topPanel.setVisible(true);
         panel.add(topPanel);
 
@@ -39,13 +38,13 @@ public class Login extends JFrame {
         Border border = BorderFactory.createLineBorder(Color.BLACK);
         infPanel.setBorder(border);
         infPanel.setBackground(new Color(207, 212, 217, 210)); // gris claro
-        infPanel.setBounds(0, 610, 1400, 86);
+        infPanel.setBounds(0, 625, 1400, 75);
         infPanel.setVisible(true);
         panel.add(infPanel);
 
         //Añadir información al panel inferior
         JLabel infoLabel = new JLabel("© 2024 IPS SALUD PRO - Todos los derechos reservados");
-        infoLabel.setBounds(500, 25, 400, 40);
+        infoLabel.setBounds(500, 20, 400, 40);
         infoLabel.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
         infoLabel.setForeground(Color.BLACK);
         infoLabel.setVisible(true);
@@ -77,7 +76,7 @@ public class Login extends JFrame {
         rightPanel.add(sedeLabel); // Agrega usuarioLabel a rightPanel
 
         // Crear JComboBox para seleccionar la sede
-        String[] sedes = {"Principal - Bucaramanga", "Sede - Floridablanca", "Sede - Piedecuesta", "Sede - Girón", "Sede - Ríonegro", "Sede - Pamplona", "Sede - Lebrija"};
+        String[] sedes = {"","Principal - Bucaramanga", "Sede - Floridablanca", "Sede - Piedecuesta", "Sede - Girón", "Sede - Ríonegro", "Sede - Pamplona", "Sede - Lebrija"};
         JComboBox<String> sedeComboBox = new JComboBox<>(sedes);
         sedeComboBox.setBounds(65, 100, 300, 40);
         sedeComboBox.setFont(new Font("Arial", Font.CENTER_BASELINE, 14));
@@ -138,6 +137,17 @@ public class Login extends JFrame {
         logoLabel2.setBounds(0, 0, 1400, 800);
         panel.add(logoLabel2, BorderLayout.CENTER);
 
+        // Crear Advertencia si se oprime el botón de Cerrar
+        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        this.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                Object[] options = {"Sí", "No"};
+                if (JOptionPane.showOptionDialog(panel, "¿Desea cerrar la aplicación?", "Cerrar Aplicación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == JOptionPane.YES_OPTION) {
+                    System.exit(0);
+                }
+            }
+        });
     }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
