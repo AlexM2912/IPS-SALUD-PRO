@@ -2,13 +2,13 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package co.edu.upb.ips.clases;
+package co.edu.upb.ips.models;
 
-import java.awt.HeadlessException;
+import javax.swing.*;
+import java.awt.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -27,10 +27,9 @@ public class CConexion {
     
     public Connection estableceConexion(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             conectar = DriverManager.getConnection(cadena, usuario, contrasenia);
-            JOptionPane.showMessageDialog(null, "Se conectó a la base de datos");
-            
+
         } catch (HeadlessException e) {
             JOptionPane.showMessageDialog(null, "No se conecto a la base de datos, error: "+ e.toString());
         } catch (ClassNotFoundException e) {

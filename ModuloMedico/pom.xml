@@ -19,7 +19,7 @@
             <name>iText Repository - releases</name>
             <url>https://repo.itextsupport.com/releases</url>
         </repository>
-    </repositories>
+    </repositories><build><plugins><plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><configuration><source>8</source><target>8</target><compilerArgs>--enable-preview</compilerArgs></configuration></plugin></plugins></build>
 
     <dependencies>
         <!-- JUnit 5 -->
@@ -42,6 +42,11 @@
             <version>5.5.13.2</version>
         </dependency>
         <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.10.13</version>
+        </dependency>
+        <dependency>
             <groupId>org.apache.pdfbox</groupId>
             <artifactId>pdfbox</artifactId>
             <version>2.0.24</version>
@@ -50,6 +55,11 @@
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
             <version>8.0.26</version>
+        </dependency>
+        <dependency>
+            <groupId>com.toedter</groupId>
+            <artifactId>jcalendar</artifactId>
+            <version>1.4</version>
         </dependency>
     </dependencies>
 </project>

@@ -1,6 +1,5 @@
 package co.edu.upb.ips.views;
 
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -28,21 +27,14 @@ public class GestionarActividades extends JFrame {
         panel.add(topPanel);
 
         // Añadir imagen al Panel de fondo
-        String path = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/img_1.png";
+        String path = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloMedico/src/main/java/co/edu/upb/ips/images/img.png";
         ImageIcon icon = new ImageIcon(path);
         JLabel logolabel = new JLabel(icon);
-        logolabel.setBounds(25, 80, 185, 208);
+        logolabel.setBounds(30, 80, 150, 168);
         panel.add(logolabel);
 
         // Añadir imagen al Panel de fondo
-        String path2 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/ImagenSerpiente.png";
-        ImageIcon icon2 = new ImageIcon(path2);
-        JLabel logolabel2 = new JLabel(icon2);
-        logolabel2.setBounds(600, 20, 185, 208);
-        panel.add(logolabel2);
-
-        // Añadir imagen al Panel de fondo
-        String path7 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoOperador.png";
+        String path7 = "";
         ImageIcon icon7 = new ImageIcon(path7);
         JLabel logolabel7 = new JLabel(icon7);
         logolabel7.setBounds(1170, 60, 170, 170);
@@ -56,7 +48,7 @@ public class GestionarActividades extends JFrame {
         panel.setBackground(Color.WHITE);
 
         // Crear Jlabel para el título
-        JLabel titulo = new JLabel("Bienvenid@, ¿Qúe desea diligenciar?");
+        JLabel titulo = new JLabel("Bienvenid@, ¿Qué desea diligenciar?");
         titulo.setBounds(0, 165, 1400, 40); // Ajusta las coordenadas según sea necesario
         titulo.setFont(new Font("Arial", Font.ITALIC, 30));
         titulo.setForeground(Color.BLACK);
@@ -65,11 +57,11 @@ public class GestionarActividades extends JFrame {
         panel.add(titulo); // Agrega titulo a panel
 
         // Añadir Imagenes a los botones
-        String path3 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoAgenda.png";
-        ImageIcon icon3 = new ImageIcon(path3);
-        JLabel logolabel3 = new JLabel(icon3);
-        logolabel3.setBounds(230, 320, 150, 150);
-        panel.add(logolabel3);
+        String path23 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoAgenda.png";
+        ImageIcon icon23 = new ImageIcon(path23);
+        JLabel logolabel23 = new JLabel(icon23);
+        logolabel23.setBounds(230, 320, 150, 150);
+        panel.add(logolabel23);
 
         String path4 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoRegistro.png";
         ImageIcon icon4 = new ImageIcon(path4);
@@ -104,25 +96,26 @@ public class GestionarActividades extends JFrame {
         JButton boton3 = new JButton("Historial Clínico");
         JButton boton4 = new JButton("Reporte");
 
+        // Cambiar el color de fuentes de los botones
+        boton1.setForeground(Color.WHITE);
+        boton2.setForeground(Color.WHITE);
+        boton3.setForeground(Color.WHITE);
+        boton4.setForeground(Color.WHITE);
+
         // Ajustar las coordenadas de los botones con espacio distribuido y corridos a la izquierda
         boton1.setBounds(220, 480, 150, 50);
+        boton1.setBackground(new Color(0, 47, 87));
         boton2.setBounds(470, 480, 150, 50);
+        boton2.setBackground(new Color(0, 47, 87));
         boton3.setBounds(720, 480, 150, 50);
+        boton3.setBackground(new Color(0, 47, 87));
         boton4.setBounds(970, 480, 150, 50);
+        boton4.setBackground(new Color(0, 47, 87));
 
         panel.add(boton1);
         panel.add(boton2);
         panel.add(boton3);
         panel.add(boton4);
-
-        // Crear Botón para desplegar el Manual
-        JButton Manual = new JButton("Manual");
-        Manual.setBounds(1215, 15, 120, 40);
-        Manual.setFont(new Font("Arial", Font.ITALIC, 14));
-        Manual.setBackground(new Color(179, 179, 179, 255));
-        Manual.setForeground(Color.BLACK);
-        Manual.setVisible(true);
-        panel.add(Manual); // Agrega Manual a panel
 
         // Crear JLabel para el texto de instrucción con salto de línea
         JLabel instruccionLabel = new JLabel("<html><center>Estimado(a) Médico(a), recuerde que para tramitar los procesos que manejen información confidencial,<br>deberá diligenciar sus credenciales.</center></html>");
@@ -137,6 +130,30 @@ public class GestionarActividades extends JFrame {
             // Abrir la vista de GestionarReporte
             GestionarReporte gestionarReporte = new GestionarReporte();
             gestionarReporte.setVisible(true);
+            dispose(); // Cerrar la ventana actual
+        });
+
+        // Crear ActionListener para el botón de Agenda
+        boton1.addActionListener(e -> {
+            // Abrir la vista de GestionarAgenda
+            GestionarAgenda gestionarAgenda = new GestionarAgenda();
+            gestionarAgenda.setVisible(true);
+            dispose(); // Cerrar la ventana actual
+        });
+
+        // Crear ActionListener para el botón de Órdenes Médicas
+        boton2.addActionListener(e -> {
+            // Abrir la vista de GestionarOrdenes
+            GestionarOrden gestionarOrden = new GestionarOrden();
+            gestionarOrden.setVisible(true);
+            dispose(); // Cerrar la ventana actual
+        });
+
+        // Crear ActionListener para el botón de Historial Clínico
+        boton3.addActionListener(e -> {
+            // Abrir la vista de GestionarHistorial
+            GestionarHistorial gestionarHistorial = new GestionarHistorial();
+            gestionarHistorial.setVisible(true);
             dispose(); // Cerrar la ventana actual
         });
 

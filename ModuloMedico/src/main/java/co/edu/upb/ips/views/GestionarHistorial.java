@@ -1,16 +1,12 @@
 package co.edu.upb.ips.views;
+
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-public class DiligenciarCita extends JFrame {
-
+public class GestionarHistorial extends JFrame {
     private JPanel panel;
     private JPanel topPanel;
+    public GestionarHistorial() {
 
-    public DiligenciarCita() {
         this.setVisible(true);
         this.setBounds(EXIT_ON_CLOSE, ABORT, 1400, 800);
         this.setLocationRelativeTo(null);
@@ -36,31 +32,28 @@ public class DiligenciarCita extends JFrame {
         logolabel.setBounds(30, 80, 150, 168);
         panel.add(logolabel);
 
-        // Crear JLabel para el título
-        JLabel titulo = new JLabel("Diligenciar Cita");
+        // Crear Panel para Jlabel de Bienvenida
+        JPanel bienvenidaPanel = new JPanel(null);
+        getContentPane().add(panel); // Añadir panel al JFrame
+        panel.setVisible(true);
+        panel.setBounds(0, 0, 1400, 800);
+        panel.setBackground(Color.WHITE);
+
+        // Crear Jlabel para el título
+        JLabel titulo = new JLabel("Gestionar Historial Clínico");
         titulo.setBounds(0, 165, 1400, 40); // Ajusta las coordenadas según sea necesario
         titulo.setFont(new Font("Arial", Font.ITALIC, 30));
         titulo.setForeground(Color.BLACK);
         titulo.setHorizontalAlignment(SwingConstants.CENTER); // Centrar el texto horizontalmente
-        panel.add(titulo);
-
-        // Crear Botón para volver a la vista de DiligenciarCita
-        JButton volverButton = new JButton("Anterior");
-        volverButton.setFont(new Font("Serif", Font.BOLD, 14));
-        volverButton.setForeground(Color.DARK_GRAY);
-        volverButton.setBounds(20, 630, 100, 40);
-        volverButton.setBackground(new Color(193, 219, 227, 255)); // Azul cielo
-        volverButton.setVisible(true);
-        panel.add(volverButton);
-        Border border = BorderFactory.createLineBorder(Color.BLACK);
-        volverButton.setBorder(border);
+        titulo.setVisible(true);
+        panel.add(titulo); // Agrega titulo a panel
 
         // Añadir Imagenes a los botones
-        String path3 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoAgenda.png";
-        ImageIcon icon3 = new ImageIcon(path3);
-        JLabel logolabel8 = new JLabel(icon3);
-        logolabel8.setBounds(230, 320, 150, 150);
-        panel.add(logolabel8);
+        String path23 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoAgenda.png";
+        ImageIcon icon23 = new ImageIcon(path23);
+        JLabel logolabel23 = new JLabel(icon23);
+        logolabel23.setBounds(230, 320, 150, 150);
+        panel.add(logolabel23);
 
         String path4 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoRegistro.png";
         ImageIcon icon4 = new ImageIcon(path4);
@@ -71,13 +64,13 @@ public class DiligenciarCita extends JFrame {
         String path5 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoOrden.png";
         ImageIcon icon5 = new ImageIcon(path5);
         JLabel logolabel5 = new JLabel(icon5);
-        logolabel5.setBounds(732, 325, 128, 140);
+        logolabel5.setBounds(730, 325, 128, 140);
         panel.add(logolabel5);
 
         String path6 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoReporte.png";
         ImageIcon icon6 = new ImageIcon(path6);
         JLabel logolabel6 = new JLabel(icon6);
-        logolabel6.setBounds(990, 328, 111, 133);
+        logolabel6.setBounds(980, 325, 111, 133);
         panel.add(logolabel6);
 
         // Crear Jlabel para el subtítulo
@@ -90,10 +83,16 @@ public class DiligenciarCita extends JFrame {
         panel.add(subtitulo); // Agrega subtitulo a panel
 
         // Añadir Botones
-        JButton boton1 = new JButton("Gestionar Citas");
-        JButton boton2 = new JButton("Consultar Citas");
-        JButton boton3 = new JButton("Modificar Citas");
+        JButton boton1 = new JButton("Añadir Información");
+        JButton boton2 = new JButton("Consultar Historial");
+        JButton boton3 = new JButton("Editar Historial");
         JButton boton4 = new JButton("Reporte");
+
+        // Cambiar el color de fuentes de los botones
+        boton1.setForeground(Color.WHITE);
+        boton2.setForeground(Color.WHITE);
+        boton3.setForeground(Color.WHITE);
+        boton4.setForeground(Color.WHITE);
 
         // Ajustar las coordenadas de los botones con espacio distribuido y corridos a la izquierda
         boton1.setBounds(220, 480, 150, 50);
@@ -105,19 +104,13 @@ public class DiligenciarCita extends JFrame {
         boton4.setBounds(970, 480, 150, 50);
         boton4.setBackground(new Color(0, 47, 87));
 
-        // Cambiar el color de fuentes de los botones
-        boton1.setForeground(Color.WHITE);
-        boton2.setForeground(Color.WHITE);
-        boton3.setForeground(Color.WHITE);
-        boton4.setForeground(Color.WHITE);
-
         panel.add(boton1);
         panel.add(boton2);
         panel.add(boton3);
         panel.add(boton4);
 
         // Crear JLabel para el texto de instrucción con salto de línea
-        JLabel instruccionLabel = new JLabel("<html><center>Estimado(a) Operador(a), recuerde que para tramitar los procesos que manejen información confidencial,<br>deberá diligenciar sus credenciales.</center></html>");
+        JLabel instruccionLabel = new JLabel("<html><center>Estimado(a) Médico(a), recuerde que para tramitar los procesos que manejen información confidencial,<br>deberá diligenciar sus credenciales.</center></html>");
         instruccionLabel.setFont(new Font("Urbanist", Font.ITALIC, 14));
         instruccionLabel.setForeground(Color.BLACK);
         instruccionLabel.setBounds(0, 600, 1400, 50);
@@ -132,44 +125,13 @@ public class DiligenciarCita extends JFrame {
             dispose(); // Cerrar la ventana actual
         });
 
-        // Crear ActionListener para el botón de Gestionar Citas
-        boton1.addActionListener(e -> {
-            // Abrir la vista de DiligenciarCita
-            GestionarCitas gestionarCitas = new GestionarCitas();
-            gestionarCitas.setVisible(true);
-            dispose(); // Cerrar la ventana actual
-        });
-
-        // Crear Advertencia si se oprime el botón de Cerrar
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                Object[] options = {"Sí", "No"};
-                if (JOptionPane.showOptionDialog(panel, "¿Desea cerrar la aplicación?", "Cerrar Aplicación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                }
-            }
-        });
-
-        // Crear ActionListener para el botón de volver
-        volverButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Abrir la vista de GestionarActividades
-                GestionarActividades gestionarActividades = new GestionarActividades();
-                gestionarActividades.setVisible(true);
-                dispose();
-            }
-        });
     }
 
-    // Método main
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new DiligenciarCita().setVisible(true);
+                new GestionarHistorial().setVisible(true);
             }
         });
     }

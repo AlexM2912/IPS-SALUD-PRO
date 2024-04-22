@@ -1,23 +1,24 @@
 package co.edu.upb.ips.views;
 
+import co.edu.upb.ips.models.UsuariosManager;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login extends JFrame {
 
-    private JPanel panel1;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
-    private JButton ingresarButton;
     public Login() {
 
         this.setVisible(true);
         this.setBounds(EXIT_ON_CLOSE, ABORT, 1400, 800);
         this.setLocationRelativeTo(null);
-
 
         // Crear JPanel con color de fondo blanco
         JPanel panel = new JPanel(null);
@@ -68,7 +69,7 @@ public class Login extends JFrame {
         rightPanel.add(usuarioLabel); // Agrega usuarioLabel a rightPanel
 
         // Añadir imagen al Panel de la derecha al lado de "Bienvenido"
-        String path3 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoSerpienteSalud.png";
+        String path3 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloMedico/src/main/java/co/edu/upb/ips/images/IconoSerpienteSalud.png";
         ImageIcon logo3 = new ImageIcon(path3);
         JLabel logoLabel3 = new JLabel(logo3);
         logoLabel3.setBounds(310, 10, 37, 44);
@@ -130,72 +131,48 @@ public class Login extends JFrame {
         Border border1 = BorderFactory.createLineBorder(Color.BLACK);
         ingresarButton.setBorder(border1);
 
-        // Añadir logo al Panel de fondo
-        String path = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/SALUD_PRO-preview.png";
+        // Crear ActionListener para el botón de ingresar
+        ingresarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String numeroIdentificacion = textField1.getText();
+                String contrasena = new String(passwordField1.getPassword());
+
+                // Validar que los campos no estén vacíos
+                if (numeroIdentificacion.isEmpty() || contrasena.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese número de identificación y contraseña.");
+                    return;
+                }
+                try {
+                    if (UsuariosManager.iniciarSesion(numeroIdentificacion, contrasena)) {
+                        // Acceso concedido, realizar la acción deseada
+                        JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso.");
+                        //Abrir la vista de GestionarActividades
+                        GestionarActividades gestionarActividades = new GestionarActividades();
+                        gestionarActividades.setVisible(true);
+                        dispose(); // Cerrar la ventana actual
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Inicio de sesión fallido. Verifique sus credenciales.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error inesperado: " + ex.getMessage());
+                }
+            }
+        });
+
+        // Añadir imagen al Panel de la izquierda
+        String path = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloAdministrador/src/main/java/co/edu/upb/ips/images/SALUD_PRO-preview.png";
         ImageIcon logo = new ImageIcon(path);
         JLabel logoLabel = new JLabel(logo);
         logoLabel.setBounds(130, 100, 500, 500);
         panel.add(logoLabel, BorderLayout.CENTER);
 
-        // Añadir imagen al Panel de fondo
+        // Añadir imagen al Panel de la pantalla completa
         String path2 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/FondoModuloOp.jpg";
         ImageIcon logo2 = new ImageIcon(path2);
-        JLabel logoLabel2 = new JLabel(logo2);
-        logoLabel2.setBounds(0, 0, 1400, 800);
-        panel.add(logoLabel2, BorderLayout.CENTER);
-
-        // Crear Acción para el botón de Ingresar
-        ingresarButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                // Validar que los campos no estén vacíos
-                if (textField1.getText().isEmpty() || passwordField1.getText().isEmpty()) {
-                    JOptionPane.showMessageDialog(panel, "Por favor diligencie todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-                } else {
-                    // Validar que el número de identificación sea numérico
-                    try {
-                        Long.parseLong(textField1.getText());
-                    } catch (NumberFormatException ex) {
-                        JOptionPane.showMessageDialog(panel, "El número de identificación debe ser numérico", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    // Validar que la contraseña tenga al menos 8 caracteres
-                    if (passwordField1.getText().length() < 8) {
-                        JOptionPane.showMessageDialog(panel, "La contraseña debe tener al menos 8 caracteres", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    // Válidar que la sede esté seleccionada y sea diferente a la primera opción
-                    if (sedeComboBox.getSelectedIndex() == 0) {
-                        JOptionPane.showMessageDialog(panel, "Por favor seleccione una sede", "Error", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                    // Válidar que el número de identificación esté registrado en la base de datos
-                    // Válidar que la contraseña esté registrada en la base de datos
-                    if (textField1.getText().equals("1097492322") && passwordField1.getText().equals("123456789")) {
-                        JOptionPane.showMessageDialog(panel, "            Bienvenid@", "Ingreso Exitoso", JOptionPane.INFORMATION_MESSAGE);
-                        // Redirigir a la pantalla de Gestionar Actividades
-                        new GestionarActividades().setVisible(true);
-                        dispose();
-                    } else {
-                        JOptionPane.showMessageDialog(panel, "Número de identificación o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-
-                }
-            }
-        });
-
-        // Crear Advertencia si se oprime el botón de Cerrar
-        this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        this.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                Object[] options = {"Sí", "No"};
-                if (JOptionPane.showOptionDialog(panel, "¿Desea cerrar la aplicación?", "Cerrar Aplicación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[1]) == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                }
-            }
-        });
-
+        JLabel fondoLabel2 = new JLabel(logo2);
+        fondoLabel2.setBounds(0, 0, 1366, 768);
+        panel.add(fondoLabel2, BorderLayout.CENTER);
 
         // Crear Advertencia si se oprime el botón de Cerrar
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);

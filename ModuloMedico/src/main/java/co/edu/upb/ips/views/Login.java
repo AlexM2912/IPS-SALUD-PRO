@@ -1,25 +1,19 @@
 package co.edu.upb.ips.views;
 
+import co.edu.upb.ips.models.UsuariosManager;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Login extends JFrame {
 
-    private JPanel panel;
-    private JPanel topPanel;
-    private JPanel infPanel;
-    private JPanel rightPanel;
-    private JLabel usuarioLabel;
-    private JLabel sedeLabel;
-    private JComboBox<String> sedeComboBox;
-    private JLabel identificacionLabel;
-    private JLabel contrasenaLabel;
-    private JTextField textField1;
-    private JPasswordField passwordField1;
-    private JButton ingresarButton;
     public Login() {
 
         this.setVisible(true);
@@ -137,6 +131,35 @@ public class Login extends JFrame {
         Border border1 = BorderFactory.createLineBorder(Color.BLACK);
         ingresarButton.setBorder(border1);
 
+        // Crear ActionListener para el botón de ingresar
+        ingresarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String numeroIdentificacion = textField1.getText();
+                String contrasena = new String(passwordField1.getPassword());
+
+                // Validar que los campos no estén vacíos
+                if (numeroIdentificacion.isEmpty() || contrasena.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese número de identificación y contraseña.");
+                    return;
+                }
+                try {
+                    if (UsuariosManager.iniciarSesion(numeroIdentificacion, contrasena)) {
+                        // Acceso concedido, realizar la acción deseada
+                        JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso.");
+                        //Abrir la vista de GestionarAgenda
+                        GestionarAgenda gestionarAgenda = new GestionarAgenda();
+                        gestionarAgenda.setVisible(true);
+                        dispose(); // Cerrar la ventana actual
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Inicio de sesión fallido. Verifique sus credenciales.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error inesperado: " + ex.getMessage());
+                }
+            }
+        });
+
         // Añadir imagen al Panel de la izquierda
         String path = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloAdministrador/src/main/java/co/edu/upb/ips/images/SALUD_PRO-preview.png";
         ImageIcon logo = new ImageIcon(path);
@@ -151,46 +174,6 @@ public class Login extends JFrame {
         fondoLabel2.setBounds(0, 0, 1366, 768);
         panel.add(fondoLabel2, BorderLayout.CENTER);
 
-        // Crear Acción para el botón de Ingresar
-        ingresarButton.addActionListener(new ActionListener() {
-             @Override
-             public void actionPerformed(ActionEvent e) {
-                 // Validar que los campos no estén vacíos
-                 if (textField1.getText().isEmpty() || passwordField1.getText().isEmpty()) {
-                     JOptionPane.showMessageDialog(panel, "Por favor diligencie todos los campos", "Error", JOptionPane.ERROR_MESSAGE);
-                 } else {
-                     // Validar que el número de identificación sea numérico
-                     try {
-                         Long.parseLong(textField1.getText());
-                     } catch (NumberFormatException ex) {
-                         JOptionPane.showMessageDialog(panel, "El número de identificación debe ser numérico", "Error", JOptionPane.ERROR_MESSAGE);
-                         return;
-                     }
-                     // Validar que la contraseña tenga al menos 8 caracteres
-                     if (passwordField1.getText().length() < 8) {
-                         JOptionPane.showMessageDialog(panel, "La contraseña debe tener al menos 8 caracteres", "Error", JOptionPane.ERROR_MESSAGE);
-                         return;
-                     }
-                     // Válidar que la sede esté seleccionada y sea diferente a la primera opción
-                     if (sedeComboBox.getSelectedIndex() == 0) {
-                         JOptionPane.showMessageDialog(panel, "Por favor seleccione una sede", "Error", JOptionPane.ERROR_MESSAGE);
-                         return;
-                     }
-                     // Válidar que el número de identificación esté registrado en la base de datos
-                     // Válidar que la contraseña esté registrada en la base de datos
-                        if (textField1.getText().equals("1097492322") && passwordField1.getText().equals("123456789")) {
-                            JOptionPane.showMessageDialog(panel, "            Bienvenid@", "Ingreso Exitoso", JOptionPane.INFORMATION_MESSAGE);
-                            // Redirigir a la pantalla de Gestionar Actividades
-                            new GestionarActividades().setVisible(true);
-                            dispose();
-                        } else {
-                            JOptionPane.showMessageDialog(panel, "Número de identificación o contraseña incorrectos", "Error", JOptionPane.ERROR_MESSAGE);
-                        }
-
-                 }
-             }
-        });
-
         // Crear Advertencia si se oprime el botón de Cerrar
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         this.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -203,6 +186,7 @@ public class Login extends JFrame {
             }
         });
     }
+
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Runnable() {
             @Override

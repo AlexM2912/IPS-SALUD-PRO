@@ -4,6 +4,7 @@ import com.itextpdf.text.Document;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.toedter.calendar.JCalendar;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.text.PDFTextStripper;
 
@@ -14,7 +15,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileOutputStream;
 
 public class GestionarReporte extends JFrame {
 
@@ -33,6 +33,7 @@ public class GestionarReporte extends JFrame {
         }
     }
 
+    // Metodo para cargar el PDF
     public void loadPdf(String path) {
         try {
             PDDocument document = PDDocument.load(new File(path));
@@ -44,7 +45,6 @@ public class GestionarReporte extends JFrame {
             e.printStackTrace();
         }
     }
-
 
 
     // Otros métodos y variables de la clase...
@@ -96,34 +96,47 @@ public class GestionarReporte extends JFrame {
         tipoReporteComboBox.setFont(new Font("Arial", Font.ROMAN_BASELINE, 15));
         panel.add(tipoReporteComboBox);
 
+        // Seleccionar la fecha del evento que se desea reportar
+        JLabel fechaLabel = new JLabel("Seleccione la fecha del evento a reportar:");
+        fechaLabel.setBounds(550, 300, 500, 40);
+        fechaLabel.setFont(new Font("Arial", Font.ITALIC, 17));
+        panel.add(fechaLabel);
+
+        // Crear un JCalendar para seleccionar la fecha
+        JCalendar calendario = new JCalendar();
+        calendario.setBounds(550, 350, 430, 250);
+        panel.add(calendario);
+
         // Añadir Botones
         JButton boton2 = new JButton("Descargar Reporte");
         JButton boton3 = new JButton("Cargar Reporte");
         JButton boton4 = new JButton("Enviar Reporte");
 
         // Ajustar las coordenadas de los botones con espacio distribuido y corridos a la izquierda
-        boton2.setBounds(580, 480, 150, 50);
-        boton3.setBounds(830, 480, 150, 50);
-        boton4.setBounds(1080, 480, 150, 50);
+        boton2.setBounds(1080, 300, 150, 50);
+        boton3.setBounds(1080, 400, 150, 50);
+        boton4.setBounds(1080, 500, 150, 50);
 
         panel.add(boton2);
         panel.add(boton3);
         panel.add(boton4);
 
         // Añadir imagen al Panel de fondo
-        ImageIcon icon7 = new ImageIcon("C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/IconoOperador.png");
+        ImageIcon icon7 = new ImageIcon("");
         JLabel logolabel7 = new JLabel(icon7);
         logolabel7.setBounds(1170, 60, 170, 170);
         panel.add(logolabel7);
 
-        // Crear Botón para volver a la vista de GestionarActvidades
-        JButton volverButton = new JButton("Volver");
-        volverButton.setFont(new Font("Serif", Font.HANGING_BASELINE, 14));
+        // Crear Botón para volver a la vista de DiligenciarCita
+        JButton volverButton = new JButton("Anterior");
+        volverButton.setFont(new Font("Serif", Font.BOLD, 14));
+        volverButton.setForeground(Color.DARK_GRAY);
         volverButton.setBounds(20, 630, 100, 40);
-        volverButton.setBackground(new Color(179, 179, 179)); // Azul cielo
+        volverButton.setBackground(new Color(193, 219, 227, 255)); // Azul cielo
         volverButton.setVisible(true);
         panel.add(volverButton);
         Border border = BorderFactory.createLineBorder(Color.BLACK);
+        volverButton.setBorder(border);
 
         // Crear Advertencia si se oprime el botón de Cerrar
         this.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -136,6 +149,30 @@ public class GestionarReporte extends JFrame {
                 }
             }
         });
+
+        // Añadir un reloj al panel de la derecha
+        JLabel reloj = new JLabel();
+        reloj.setBounds(65, 100, 300, 40);
+        reloj.setFont(new Font("Arial", Font.CENTER_BASELINE, 17));
+        reloj.setForeground(Color.BLACK);
+        reloj.setVisible(true);
+        panel.add(reloj);
+
+        // Crear un hilo para actualizar el reloj
+        Thread hilo = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        reloj.setText(new java.util.Date().toString());
+                        Thread.sleep(1000);
+                    }
+                } catch (InterruptedException e) {
+                    System.out.println("Error en el hilo");
+                }
+            }
+        };
+        hilo.start();
 
         // Crear ActionListener para el botón de Volver
         volverButton.addActionListener(new ActionListener() {

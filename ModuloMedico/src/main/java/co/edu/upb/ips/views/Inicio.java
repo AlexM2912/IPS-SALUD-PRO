@@ -34,7 +34,7 @@ public class Inicio extends JFrame {
         JLabel logoLabel = new JLabel(logo);
         logoLabel.setBounds(440, 90, 500, 500);
         panel.add(logoLabel, BorderLayout.CENTER);
-
+        
         // Crear botón de inicio
         JButton iniciarButton = new JButton("Iniciar");
         iniciarButton.setFont(new Font("Serif", Font.HANGING_BASELINE, 14));

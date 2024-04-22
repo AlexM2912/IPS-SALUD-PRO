@@ -38,6 +38,7 @@ public class UserMedico implements Serializable {
     }
 
     public void setTipoUsuario(String tipoUsuario) {
+
         this.tipoUsuario = tipoUsuario;
     }
 
