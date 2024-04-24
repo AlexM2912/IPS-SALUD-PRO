@@ -1,18 +1,21 @@
 package co.edu.upb.ips.views;
 
+import co.edu.upb.ips.models.CConexion;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.JTableHeader;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
-import java.time.format.TextStyle;
-import java.util.Locale;
 import javax.swing.table.TableCellRenderer;
 
 public class DetallesAgenda extends JFrame {
@@ -21,8 +24,13 @@ public class DetallesAgenda extends JFrame {
     private JTable table;
     private DefaultTableModel tableModel;
     private LocalDate currentWeekStart;
+    private int idMedicoSeleccionado; // Agrega esta variable para almacenar el ID del médico que inició sesión
+    private Connection connection; // Agrega esta variable para la conexión a la base de datos
 
-    public DetallesAgenda() {
+    public DetallesAgenda(int idMedico) {
+        idMedicoSeleccionado = idMedico; // Almacena el ID del médico que inició sesión
+        connection = new CConexion().estableceConexion(); // Establece la conexión a la base de datos
+
         // Propiedades del JFrame
         this.setTitle("Agenda");
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -188,7 +196,71 @@ public class DetallesAgenda extends JFrame {
 
         // Mostrar la ventana
         this.setVisible(true);
+
+        // Llamar al método para cargar las citas programadas
+        cargarCitasProgramadas();
     }
+
+    private boolean hayCitasProgramadas(int idMedico) {
+        boolean hayCitas = false;
+        try {
+            String sql = "SELECT COUNT(*) AS total FROM CitasMedicas WHERE id_medico = ? AND (estado_cita = 'Programada' OR estado_cita = 'Confirmada')";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, idMedico);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                int totalCitas = resultSet.getInt("total");
+                hayCitas = totalCitas > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(panel, "Error al verificar las citas programadas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return hayCitas;
+    }
+
+    // Método para cargar las citas programadas del médico
+    private void cargarCitasProgramadas() {
+        Connection connection = new CConexion().estableceConexion();
+        try {
+            String sql = "SELECT * FROM CitasMedicas WHERE id_medico = ? AND (estado_cita = 'Programada' OR estado_cita = 'Confirmada')";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, idMedicoSeleccionado);
+            ResultSet resultSet = statement.executeQuery();
+
+            // Limpiar la tabla antes de agregar nuevos datos
+            for (int i = 1; i < table.getRowCount(); i++) {
+                for (int j = 1; j < table.getColumnCount(); j++) {
+                    table.setValueAt("", i, j);
+                }
+            }
+
+            // Aquí agregamos los datos de las citas médicas programadas a la tabla
+            while (resultSet.next()) {
+                LocalDate fechaCita = resultSet.getDate("fecha_hora").toLocalDate();
+                int horaCita = resultSet.getTime("fecha_hora").toLocalTime().getHour();
+                int columna = fechaCita.getDayOfWeek().getValue(); // Obtener el día de la semana como un número
+                int fila = horaCita - 6; // Calcular la diferencia de horas respecto al inicio de la tabla
+                if (fila >= 0 && fila < 12) { // Verificar que la fila esté dentro del rango válido
+                    if (resultSet.getString("estado_cita").equals("Confirmada")) {
+                        table.setValueAt("Consulta", fila + 1, columna); // Agregar el mensaje "Consulta" en la celda correspondiente
+                    } else {
+                        table.setValueAt("Cita Medica", fila + 1, columna); // Agregar el texto "Cita Medica" en la celda correspondiente
+                    }
+                }
+            }
+
+            // Verificar si se recuperaron citas de la base de datos
+            if (!resultSet.next()) {
+                System.out.println("No se encontraron citas programadas para el médico.");
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(panel, "Error al cargar las citas programadas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     private void updateWeek(LocalDate startDate) {
         currentWeekStart = startDate;
@@ -213,7 +285,8 @@ public class DetallesAgenda extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new DetallesAgenda().setVisible(true);
+                // Aquí debes pasar el ID del médico que inició sesión
+                new DetallesAgenda(1).setVisible(true);
             }
         });
     }

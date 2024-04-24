@@ -11,8 +11,6 @@ import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 
 public class GestionarCitas extends JFrame{
 
@@ -79,6 +77,32 @@ public class GestionarCitas extends JFrame{
         programarButton.setBackground(new Color(0, 47, 87, 255)); // Azul cielo
         programarButton.setVisible(true);
         panel.add(programarButton);
+
+        // Crear ActionListener para el botón de Programar Cita
+        programarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Obtener el número de documento del paciente
+                String numeroDocumento = documentoField.getText();
+
+                // Validar que el campo del número de documento no esté vacío
+                if (numeroDocumento.isEmpty()) {
+                    JOptionPane.showMessageDialog(panel, "Por favor ingrese el número de documento.", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Consultar la información del paciente
+                String[] paciente = DatabaseManager.consultarPaciente(numeroDocumento);
+
+                if (paciente != null) {
+                    // Abrir la vista de ProgramarCita
+                    new ProgramarCita();
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(panel, "Paciente no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
 
         // Añadir Imagen encima del botón de Programar Cita
         String path2 = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloOperador/src/main/java/co/edu/upb/ips/images/img.png";

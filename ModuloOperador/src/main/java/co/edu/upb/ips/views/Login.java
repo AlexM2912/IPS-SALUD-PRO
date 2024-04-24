@@ -146,7 +146,6 @@ public class Login extends JFrame {
                 try {
                     if (UsuariosManager.iniciarSesion(numeroIdentificacion, contrasena)) {
                         // Acceso concedido, realizar la acción deseada
-                        JOptionPane.showMessageDialog(null, "Inicio de sesión exitoso.");
                         //Abrir la vista de GestionarActividades
                         GestionarActividades gestionarActividades = new GestionarActividades();
                         gestionarActividades.setVisible(true);

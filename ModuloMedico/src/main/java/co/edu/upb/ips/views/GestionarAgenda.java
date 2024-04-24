@@ -109,12 +109,13 @@ public class GestionarAgenda extends JFrame {
         consultar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Abrir la vista de DetallesAgenda
-                DetallesAgenda detallesAgenda = new DetallesAgenda();
+                // Abrir la vista de DetallesAgenda con el ID del médico
+                DetallesAgenda detallesAgenda = new DetallesAgenda(1);
                 detallesAgenda.setVisible(true);
                 dispose(); // Cerrar la ventana actual
             }
         });
+
 
         // Crear ActionListener para el botón de Definir Estado de la Agenda
         definir.addActionListener(new ActionListener() {
