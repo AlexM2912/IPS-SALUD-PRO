@@ -27,9 +27,9 @@ git clone
 
 ## Capturas de Pantalla
 
-![img.png](img.png)
-![img_2.png](img_2.png)
-![img_1.png](img_1.png)
+![Captura de pantalla 2024-05-03 194038](https://github.com/AlexM2912/IPS-SALUD-PRO/assets/129182783/88f5736a-82fc-48cd-beaa-8e4ba1df0be6)
+![Captura de pantalla 2024-05-03 193812](https://github.com/AlexM2912/IPS-SALUD-PRO/assets/129182783/b14248ca-484c-4e04-b67e-b50e156d68e9)
+![Captura de pantalla 2024-05-03 193933](https://github.com/AlexM2912/IPS-SALUD-PRO/assets/129182783/a0255385-e7e0-414b-b57d-9a04ae251c57)
 
 ## Autor
 
