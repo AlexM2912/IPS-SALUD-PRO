@@ -1,4 +1,6 @@
-package co.edu.upb.ips.models;
+package co.edu.upb.ips.controllers;
+
+import co.edu.upb.ips.models.CConexion;
 
 import javax.swing.*;
 import java.sql.Connection;

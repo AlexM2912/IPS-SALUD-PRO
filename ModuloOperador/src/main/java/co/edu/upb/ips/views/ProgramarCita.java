@@ -165,6 +165,7 @@ public class ProgramarCita extends JFrame {
         medicosLabel.setForeground(Color.BLACK);
         panel.add(medicosLabel);
 
+        // Crear tabla con los médicos disponibles
         String[] columnNames = {"ID", "Nombre", "Primer Apellido", "Consultorio"};
         Object[][] data = {};
         tableModel = new DefaultTableModel(data, columnNames) {

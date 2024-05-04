@@ -1,4 +1,6 @@
-package co.edu.upb.ips.models;
+package co.edu.upb.ips.controllers;
+
+import co.edu.upb.ips.models.CConexion;
 
 import javax.swing.*;
 import java.sql.*;
@@ -12,18 +14,19 @@ public class DatabaseManager {
             Connection conn = conexion.estableceConexion();
 
             if (conn != null) {
-                String query = "SELECT primer_nombre, primer_apellido, tipo_documento, estado_afiliacion, telefono FROM Pacientes WHERE numero_documento = ?";
+                String query = "SELECT id_paciente, primer_nombre, primer_apellido, tipo_documento, estado_afiliacion, telefono FROM Pacientes WHERE numero_documento = ?";
                 PreparedStatement statement = conn.prepareStatement(query);
                 statement.setString(1, numeroDocumento);
                 ResultSet resultSet = statement.executeQuery();
 
                 if (resultSet.next()) {
-                    paciente = new String[5];
-                    paciente[0] = resultSet.getString("primer_nombre");
-                    paciente[1] = resultSet.getString("primer_apellido");
-                    paciente[2] = resultSet.getString("tipo_documento");
-                    paciente[3] = resultSet.getString("estado_afiliacion");
-                    paciente[4] = resultSet.getString("telefono");
+                    paciente = new String[6];
+                    paciente[0] = resultSet.getString("id_paciente");
+                    paciente[1] = resultSet.getString("primer_nombre");
+                    paciente[2] = resultSet.getString("primer_apellido");
+                    paciente[3] = resultSet.getString("tipo_documento");
+                    paciente[4] = resultSet.getString("estado_afiliacion");
+                    paciente[5] = resultSet.getString("telefono");
                 }
 
                 conn.close(); // Cerrar la conexión después de usarla

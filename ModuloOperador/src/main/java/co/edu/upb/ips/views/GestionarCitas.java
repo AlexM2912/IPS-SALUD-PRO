@@ -1,6 +1,6 @@
 package co.edu.upb.ips.views;
 
-import co.edu.upb.ips.models.DatabaseManager;
+import co.edu.upb.ips.controllers.DatabaseManager;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -144,7 +144,7 @@ public class GestionarCitas extends JFrame{
         panel.add(logolabel4);
 
         // Crear tabla para consultar información de los pacientes
-        String[] columnNames = {"Nombre", "Apellido", "Tipo Documento", "Estado", "Teléfono"}; // Columnas de la tabla
+        String[] columnNames = {"ID Paciente", "Nombre", "Apellido", "Tipo Documento", "Estado", "Teléfono"}; // Columnas de la tabla
         Object[][] data = {
 
         };
@@ -230,13 +230,12 @@ public class GestionarCitas extends JFrame{
                     // Limpiar la tabla antes de mostrar los resultados
                     tableModel.setRowCount(0);
                     // Agregar la información del paciente a la tabla
-                    tableModel.addRow(paciente);
+                    tableModel.addRow(new Object[]{paciente[0], paciente[1], paciente[2], paciente[3], paciente[4], paciente[5]});
                 } else {
                     JOptionPane.showMessageDialog(panel, "Paciente no encontrado", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
-
 
         // Crear Botón para remover Información del paciente dentro de la tabla
         JButton removerButton = new JButton("Remover");

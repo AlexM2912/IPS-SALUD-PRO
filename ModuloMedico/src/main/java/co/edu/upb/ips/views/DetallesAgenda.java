@@ -1,6 +1,7 @@
 package co.edu.upb.ips.views;
 
 import co.edu.upb.ips.models.CConexion;
+import co.edu.upb.ips.clases.*;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -10,12 +11,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
+import java.sql.*;
+import java.time.*;
+import java.util.HashMap;
 import javax.swing.table.TableCellRenderer;
 
 public class DetallesAgenda extends JFrame {
@@ -24,12 +22,12 @@ public class DetallesAgenda extends JFrame {
     private JTable table;
     private DefaultTableModel tableModel;
     private LocalDate currentWeekStart;
-    private int idMedicoSeleccionado; // Agrega esta variable para almacenar el ID del médico que inició sesión
-    private Connection connection; // Agrega esta variable para la conexión a la base de datos
+    private int idMedicoSeleccionado;
+    private Connection connection;
 
     public DetallesAgenda(int idMedico) {
-        idMedicoSeleccionado = idMedico; // Almacena el ID del médico que inició sesión
-        connection = new CConexion().estableceConexion(); // Establece la conexión a la base de datos
+        idMedicoSeleccionado = idMedico;
+        connection = new CConexion().estableceConexion();
 
         // Propiedades del JFrame
         this.setTitle("Agenda");
@@ -39,13 +37,13 @@ public class DetallesAgenda extends JFrame {
 
         // Crear JPanel con color de fondo blanco
         panel = new JPanel(null);
-        getContentPane().add(panel); // Añadir panel al JFrame
+        getContentPane().add(panel);
         panel.setBackground(Color.WHITE);
 
         // Crear JPanel superior con color de fondo azul oscuro
         JPanel topPanel = new JPanel(null);
         panel.add(topPanel);
-        topPanel.setBackground(new Color(0, 47, 87)); // Azul oscuro
+        topPanel.setBackground(new Color(0, 47, 87));
         topPanel.setBounds(0, 0, 1400, 70);
 
         // Añadir imagen al Panel de fondo
@@ -57,35 +55,35 @@ public class DetallesAgenda extends JFrame {
 
         // Crear JLabel para el título
         JLabel titulo = new JLabel("Detalles de la Agenda");
-        titulo.setBounds(0, 120, 1400, 40); // Ajusta las coordenadas según sea necesario
+        titulo.setBounds(0, 120, 1400, 40);
         titulo.setHorizontalAlignment(SwingConstants.CENTER);
         titulo.setFont(new Font("Arial", Font.ITALIC, 30));
         titulo.setForeground(Color.BLACK);
         titulo.setVisible(true);
-        panel.add(titulo); // Agrega titulo a panel
+        panel.add(titulo);
 
         // Crear JLabel para el mes
         monthLabel = new JLabel();
-        monthLabel.setBounds(650, 200, 200, 40); // Ajusta las coordenadas según sea necesario
+        monthLabel.setBounds(650, 200, 200, 40);
         monthLabel.setFont(new Font("Arial", Font.CENTER_BASELINE, 20));
         monthLabel.setForeground(Color.BLACK);
         monthLabel.setVisible(true);
         panel.add(monthLabel);
 
         // Crear tabla con las horas y los días de la semana
-        String[] columnNames = {"", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"}; // Columnas de la tabla
-        Object[][] data = new Object[13][6]; // Número de horas
+        String[] columnNames = {"", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes"};
+        Object[][] data = new Object[13][6];
         for (int i = 0; i < 13; i++) {
             for (int j = 0; j < 6; j++) {
                 if (i == 0 && j == 0) {
-                    data[i][j] = "<html><b>Hora</b></html>"; // Palabra "Hora" en negrita en la esquina superior izquierda
+                    data[i][j] = "<html><b>Hora</b></html>";
                 } else if (i == 0) {
-                    data[i][j] = "<html><b>" + columnNames[j] + "</b></html>"; // Días de la semana en negrita
+                    data[i][j] = "<html><b>" + columnNames[j] + "</b></html>";
                 } else {
                     if (j == 0) {
-                        data[i][j] = "<html><b></b></html>"; // Horas en negrita
+                        data[i][j] = "<html><b></b></html>";
                     } else {
-                        data[i][j] = ""; // Datos vacíos para el resto de la tabla
+                        data[i][j] = "";
                     }
                 }
             }
@@ -133,7 +131,7 @@ public class DetallesAgenda extends JFrame {
         updateWeek(currentWeekStart);
 
         // Cambiar color de las celdas de la tabla
-        table.setBackground(new Color(255, 255, 255, 255)); // Gris claro
+        table.setBackground(new Color(255, 255, 255, 255));
         table.setForeground(Color.BLACK);
 
         // Establecer bordes para la tabla
@@ -148,14 +146,14 @@ public class DetallesAgenda extends JFrame {
         // Crear botones para cambiar la semana
         JButton prevWeek = new JButton("Semana anterior");
         prevWeek.setBounds(215, 240, 150, 30);
-        prevWeek.setBackground(new Color(0, 47, 87)); // Azul cielo
+        prevWeek.setBackground(new Color(0, 47, 87));
         prevWeek.setForeground(Color.WHITE);
         panel.add(prevWeek);
         prevWeek.addActionListener(e -> updateWeek(currentWeekStart.minusWeeks(1)));
 
         JButton nextWeek = new JButton("Siguiente semana");
         nextWeek.setBounds(1065, 240, 150, 30);
-        nextWeek.setBackground(new Color(0, 47, 87)); // Azul cielo
+        nextWeek.setBackground(new Color(0, 47, 87));
         nextWeek.setForeground(Color.WHITE);
         panel.add(nextWeek);
         nextWeek.addActionListener(e -> updateWeek(currentWeekStart.plusWeeks(1)));
@@ -165,7 +163,7 @@ public class DetallesAgenda extends JFrame {
         volverButton.setFont(new Font("Serif", Font.BOLD, 14));
         volverButton.setForeground(Color.DARK_GRAY);
         volverButton.setBounds(20, 630, 100, 40);
-        volverButton.setBackground(new Color(193, 219, 227, 255)); // Azul cielo
+        volverButton.setBackground(new Color(193, 219, 227, 255));
         volverButton.setVisible(true);
         panel.add(volverButton);
         Border border2 = BorderFactory.createLineBorder(Color.BLACK);
@@ -178,7 +176,7 @@ public class DetallesAgenda extends JFrame {
                 //Abrir la vista de GestionarAgenda
                 GestionarAgenda gestionarAgenda = new GestionarAgenda();
                 gestionarAgenda.setVisible(true);
-                dispose(); // Cerrar la ventana actual
+                dispose();
             }
         });
 
@@ -194,74 +192,54 @@ public class DetallesAgenda extends JFrame {
             }
         });
 
+        // Agregar cita de prueba manualmente
+        agregarCitaManualmente(1, LocalDateTime.of(2024, Month.MAY, 3, 9, 0), "Programada");
+
         // Mostrar la ventana
         this.setVisible(true);
 
-        // Llamar al método para cargar las citas programadas
+        // Cargar las citas programadas
         cargarCitasProgramadas();
     }
 
-    private boolean hayCitasProgramadas(int idMedico) {
-        boolean hayCitas = false;
-        try {
-            String sql = "SELECT COUNT(*) AS total FROM CitasMedicas WHERE id_medico = ? AND (estado_cita = 'Programada' OR estado_cita = 'Confirmada')";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, idMedico);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                int totalCitas = resultSet.getInt("total");
-                hayCitas = totalCitas > 0;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(panel, "Error al verificar las citas programadas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-        return hayCitas;
-    }
-
+    // Método para cargar las citas programadas del médico
     // Método para cargar las citas programadas del médico
     private void cargarCitasProgramadas() {
-        Connection connection = new CConexion().estableceConexion();
         try {
             String sql = "SELECT * FROM CitasMedicas WHERE id_medico = ? AND (estado_cita = 'Programada' OR estado_cita = 'Confirmada')";
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, idMedicoSeleccionado);
             ResultSet resultSet = statement.executeQuery();
 
-            // Limpiar la tabla antes de agregar nuevos datos
+            // Limpiar la tabla
             for (int i = 1; i < table.getRowCount(); i++) {
                 for (int j = 1; j < table.getColumnCount(); j++) {
                     table.setValueAt("", i, j);
                 }
             }
 
-            // Aquí agregamos los datos de las citas médicas programadas a la tabla
+            // Asignar citas médicas a las celdas de la tabla
             while (resultSet.next()) {
-                LocalDate fechaCita = resultSet.getDate("fecha_hora").toLocalDate();
-                int horaCita = resultSet.getTime("fecha_hora").toLocalTime().getHour();
+                LocalDateTime fechaHoraCita = resultSet.getTimestamp("fecha_hora").toLocalDateTime();
+                LocalDate fechaCita = fechaHoraCita.toLocalDate();
+                LocalTime horaCita = fechaHoraCita.toLocalTime();
                 int columna = fechaCita.getDayOfWeek().getValue(); // Obtener el día de la semana como un número
-                int fila = horaCita - 6; // Calcular la diferencia de horas respecto al inicio de la tabla
-                if (fila >= 0 && fila < 12) { // Verificar que la fila esté dentro del rango válido
-                    if (resultSet.getString("estado_cita").equals("Confirmada")) {
-                        table.setValueAt("Consulta", fila + 1, columna); // Agregar el mensaje "Consulta" en la celda correspondiente
-                    } else {
-                        table.setValueAt("Cita Medica", fila + 1, columna); // Agregar el texto "Cita Medica" en la celda correspondiente
-                    }
+                int fila = horaCita.getHour() - 6; // Calcular la diferencia de horas respecto al inicio de la tabla
+
+                // Verificar que la fila y la columna estén dentro del rango válido
+                if (fila >= 0 && fila < 13 && columna >= 1 && columna <= 5) {
+                    // Asignar el mensaje "Consulta Médica" a la celda correspondiente en la tabla
+                    table.setValueAt("Consulta Médica", fila + 1, columna);
                 }
             }
 
-            // Verificar si se recuperaron citas de la base de datos
-            if (!resultSet.next()) {
-                System.out.println("No se encontraron citas programadas para el médico.");
-            }
-
+            // Repintar la tabla para reflejar los cambios
+            table.repaint();
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(panel, "Error al cargar las citas programadas: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
-
     private void updateWeek(LocalDate startDate) {
         currentWeekStart = startDate;
         String[] monthNames = {"Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"};
@@ -281,13 +259,26 @@ public class DetallesAgenda extends JFrame {
         }
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                // Aquí debes pasar el ID del médico que inició sesión
-                new DetallesAgenda(1).setVisible(true);
+    public void agregarCitaManualmente(int idMedico, LocalDateTime fechaHora, String estadoCita) {
+        try {
+            String sql = "INSERT INTO CitasMedicas (id_medico, fecha_hora, estado_cita) VALUES (?, ?, ?)";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, idMedico);
+            statement.setTimestamp(2, Timestamp.valueOf(fechaHora));
+            statement.setString(3, estadoCita);
+            int rowsInserted = statement.executeUpdate();
+            if (rowsInserted > 0) {
+                System.out.println("Se ha añadido una nueva cita médica.");
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al agregar la cita médica: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new DetallesAgenda(1).setVisible(true);
         });
     }
 }

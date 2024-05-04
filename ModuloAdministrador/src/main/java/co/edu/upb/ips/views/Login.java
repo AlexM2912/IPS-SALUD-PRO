@@ -1,5 +1,7 @@
 package co.edu.upb.ips.views;
 
+import co.edu.upb.ips.models.UsuariosManager;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.Color;
@@ -123,6 +125,34 @@ public class Login extends JFrame {
         Border border1 = BorderFactory.createLineBorder(Color.BLACK);
         ingresarButton.setBorder(border1);
 
+        // Crear ActionListener para el botón de ingresar
+        ingresarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String numeroIdentificacion = textField1.getText();
+                String contrasena = new String(passwordField1.getPassword());
+
+                // Validar que los campos no estén vacíos
+                if (numeroIdentificacion.isEmpty() || contrasena.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Por favor, ingrese número de identificación y contraseña.");
+                    return;
+                }
+                try {
+                    if (UsuariosManager.iniciarSesion(numeroIdentificacion, contrasena)) {
+                        // Acceso concedido, realizar la acción deseada
+                        //Abrir la vista de Gestionar Actividades
+                        GestionarActividades gestionarActividades = new GestionarActividades();
+                        gestionarActividades.setVisible(true);
+                        dispose(); // Cerrar la ventana actual
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Inicio de sesión fallido. Verifique sus credenciales.");
+                    }
+                } catch (Exception ex) {
+                    JOptionPane.showMessageDialog(null, "Error inesperado: " + ex.getMessage());
+                }
+            }
+        });
+
         // Crear JLabel con el título
         String path = "C:/Users/alexd.MONTAÑEZ/IdeaProjects/IPS-SALUD-PRO/ModuloAdministrador/src/main/java/co/edu/upb/ips/images/SALUD_PRO-preview.png";
         ImageIcon logo = new ImageIcon(path);
@@ -153,7 +183,7 @@ public class Login extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new Inicio().setVisible(true);
+                new Login().setVisible(true);
             }
         });
     }

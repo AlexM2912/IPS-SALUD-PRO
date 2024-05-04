@@ -64,7 +64,7 @@ public class GestionarAgenda extends JFrame {
         consultar.setBounds(180, 370, 300, 40);
         consultar.setBackground(new Color(0, 47, 87));
         consultar.setForeground(Color.WHITE);
-        consultar.setFont(new Font("Arial", Font.ITALIC, 16));
+        consultar.setFont(new Font("Serif", Font.BOLD, 14));
         panel.add(consultar);
 
         // Añadir Botón para Definir el Estado de la Agenda
@@ -72,7 +72,7 @@ public class GestionarAgenda extends JFrame {
         definir.setBounds(180, 420, 300, 40);
         definir.setBackground(new Color(0, 47, 87));
         definir.setForeground(Color.WHITE);
-        definir.setFont(new Font("Arial", Font.ITALIC, 16));
+        definir.setFont(new Font("Serif", Font.BOLD, 14));
         panel.add(definir);
 
         // Añadir Botón para Realizar Consulta Avanzada
@@ -80,7 +80,7 @@ public class GestionarAgenda extends JFrame {
         avanzada.setBounds(180, 470, 300, 40);
         avanzada.setBackground(new Color(0, 47, 87));
         avanzada.setForeground(Color.WHITE);
-        avanzada.setFont(new Font("Arial", Font.ITALIC, 16));
+        avanzada.setFont(new Font("Serif", Font.BOLD, 14));
         panel.add(avanzada);
 
         // Crear Botón para volver a la vista de DiligenciarCita

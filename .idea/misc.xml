@@ -11,6 +11,7 @@
       <set>
         <option value="$PROJECT_DIR$/ModuloAdmin/pom.xml" />
         <option value="$PROJECT_DIR$/ModuloPaciente/pom.xml" />
+        <option value="$PROJECT_DIR$/ServidorIPS/pom.xml" />
       </set>
     </option>
   </component>

@@ -1,16 +1,12 @@
 package co.edu.upb.ips.views;
 
-import co.edu.upb.ips.models.UsuariosManager;
+import co.edu.upb.ips.controllers.UsuariosManager;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 
 public class Login extends JFrame {
 
